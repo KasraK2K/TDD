@@ -39,4 +39,22 @@ describe('User Registration', () => {
 				done();
 			});
 	});
+
+	it('saves username and email to database', (done) => {
+		request(app)
+			.post('/api/1.0/users')
+			.send({
+				username: 'user1',
+				email: 'user1@mail.com',
+				password: 'P4ssword',
+			})
+			.then(() => {
+				User.findAll().then((userList) => {
+					const savedUser = userList[0];
+					expect(savedUser.username).toBe('user1');
+					expect(savedUser.email).toBe('user1@mail.com');
+					done();
+				});
+			});
+	});
 });
